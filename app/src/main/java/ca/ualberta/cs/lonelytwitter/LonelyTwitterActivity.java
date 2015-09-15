@@ -18,15 +18,35 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+
 public class LonelyTwitterActivity extends Activity {
 
 	private static final String FILENAME = "file.sav";
+//	static - Declaring static is making it a class variable, this would be accessed through the class name .x.
+//	final -  having final will have the intended effect(yuqi de xiaoguo)
 	private EditText bodyText;
 	private ListView oldTweetsList;
-	
+	private Object integer = new Integer(17); //can be anything other than integer
+//	private ArrayList<Tweet> tweeetList;
+//	private ArrayList<Object> tweetList;
+//	<> what to list/ can include ImportantTweet
+	/**public void someMethod(){
+		Tweet tweet = new ImportantTweet("test");
+		tweet.extraMethod();
+	}**/
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState){
+		Tweetable tweet;
+
+		try {
+			tweet = new ImportantTweet("longer than 140 characters");
+		} catch (IOException e){
+			throw new RuntimeException(e);
+		}
+
+		tweet.isImportant();
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
