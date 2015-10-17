@@ -1,57 +1,65 @@
 package ca.ualberta.cs.lonelytwitter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.IllegalFormatCodePointException;
 
 /**
- * Created by qingdai on 9/14/15.
- *
- * dont allow someone to go to tweet.text = ""
- * we want to force them to call methods instead)
+ * Created by joshua2 on 9/16/15.
  */
+public abstract class Tweet extends Object implements Tweetable, MyObservable {
+    private String text;
+    protected Date date;
 
-//methods attributes written as camelCase
-//classes written by CamelCase
-
-
-//    Object is a class since it is upperclass
-public abstract class Tweet{
-    //private protected - public
-    protected  String text;
-    private Date date;
-//    private String enExtractToXX();
-//    private static Integer somthing;
-
-    public Tweet(String tweet, Date date) {
-        text = tweet; //text refers to the text above /by using this.something, if it have a same name with a global variable.
-        this.date = date;//*iheritant
+    public Tweet(String tweet, Date date) throws TweetTooLongException {
+        this.setText(tweet);
+        this.date = date;
     }
 
-    public Tweet(String text) {
-//        this(text, new Date());
-        this.text = text;
-        date = new Date();
-
+    public Tweet(String tweet) throws TweetTooLongException {
+        this.setText(tweet);
+        this.date = new Date();
     }
 
-    public void setText(String text) throws IOException{
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) throws TweetTooLongException {
         if (text.length() <= 140) {
             this.text = text;
-        } else{
-            throw new IOException("Tweet was too long");}
+        } else {
+            throw new TweetTooLongException();
+        }
+        notifyAllObservers();
     }
 
     public Date getDate() {
         return date;
     }
 
-
     public void setDate(Date date) {
         this.date = date;
+        notifyAllObservers();
     }
-//    x.y in java is basically x->y in C pass by reference (change original value)
-
 
     public abstract Boolean isImportant();
+
+    @Override
+    public String toString() {
+        return date.toString() + " | " + text;
+    }
+
+    public void addObserver(MyObserver observer) {
+        observers.add(observer);
+    }
+
+    private volatile ArrayList<MyObserver> observers
+            = new ArrayList<MyObserver>();
+
+    private void notifyAllObservers() {
+        for (MyObserver observer : observers) {
+            observer.myNotify(this);
+        }
+    }
 }

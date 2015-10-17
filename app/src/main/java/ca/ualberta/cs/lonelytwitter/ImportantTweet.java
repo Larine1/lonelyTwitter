@@ -1,29 +1,28 @@
 package ca.ualberta.cs.lonelytwitter;
 
-import java.io.IOException;
-import java.lang.ref.SoftReference;
 import java.util.Date;
 
 /**
- * Created by qingdai on 9/14/15.
+ * Created by joshua2 on 9/16/15.
  */
-public class ImportantTweet extends Tweet implements Tweetable{
-//    extends Tweet inheritance
-//    make subclass:ImportantTweet is the subclass of Tweet
+public class ImportantTweet extends Tweet {
     public ImportantTweet(String tweet, Date date) {
         super(tweet, date);
-//      super class
+        this.setText(tweet);
+        this.date = date;
     }
 
-//    make subclass/ getter/ setter
-    public ImportantTweet(String text) throws IOException{
-        super(text);
-            this.setText(text);
+    public ImportantTweet(String tweet) {
+        super(tweet);
+    }
+
+    public Boolean isImportant() {
+        return Boolean.TRUE;
     }
 
     @Override
-    public Boolean isImportant() {
-        return Boolean.TRUE;
+    public String getText() {
+        return "!!!" + super.getText();
     }
 
 }
